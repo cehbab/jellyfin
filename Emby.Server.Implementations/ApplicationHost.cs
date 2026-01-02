@@ -168,6 +168,8 @@ namespace Emby.Server.Implementations
                 ApplicationVersion);
 
             _disposableParts.Add(_pluginManager);
+
+            NamingOptions.StringSubstitutions = ConfigurationManager.Configuration.StringSubstitutions;
         }
 
         /// <summary>

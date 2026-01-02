@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
 using System.Text.RegularExpressions;
+using MediaBrowser.Model.Configuration;
 
 namespace Emby.Naming.Video
 {
@@ -14,9 +17,10 @@ namespace Emby.Naming.Video
         /// </summary>
         /// <param name="name">Name of file.</param>
         /// <param name="expressions">List of regex to parse name and year from.</param>
+        /// <param name="substitutions">List of substitutions to alter name.</param>
         /// <param name="newName">Parsing result string.</param>
         /// <returns>True if parsing was successful.</returns>
-        public static bool TryClean([NotNullWhen(true)] string? name, IReadOnlyList<Regex> expressions, out string newName)
+        public static bool TryClean([NotNullWhen(true)] string? name, IReadOnlyList<Regex> expressions, IReadOnlyList<StringSubstitution> substitutions, out string newName)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -29,6 +33,16 @@ namespace Emby.Naming.Video
             for (int i = 0; i < expressions.Count; i++)
             {
                 if (TryClean(name, expressions[i], out newName))
+                {
+                    cleaned = true;
+                    name = newName;
+                }
+            }
+
+            // Iteratively apply the substitutions to clean the string.
+            for (int i = 0; i < substitutions.Count; i++)
+            {
+                if (StringSubstitution.Clean(substitutions[i], name, out newName))
                 {
                     cleaned = true;
                     name = newName;

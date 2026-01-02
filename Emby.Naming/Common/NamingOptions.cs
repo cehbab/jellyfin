@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Emby.Naming.Video;
+using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Entities;
 
 // ReSharper disable StringLiteralTypo
@@ -768,8 +769,16 @@ namespace Emby.Naming.Common
                 IsNamed = true
             }).ToArray();
 
+            CleanStringSubstitutions = StringSubstitutions;
+
             Compile();
         }
+
+        /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>The type.</value>
+        public static StringSubstitution[] StringSubstitutions { get; set; } = Array.Empty<StringSubstitution>();
 
         /// <summary>
         /// Gets or sets the folder name to extra types mapping.
@@ -895,6 +904,11 @@ namespace Emby.Naming.Common
         /// Gets list of clean string regular expressions.
         /// </summary>
         public Regex[] CleanStringRegexes { get; private set; } = [];
+
+        /// <summary>
+        /// Gets or sets list of clean string substitutions.
+        /// </summary>
+        public StringSubstitution[] CleanStringSubstitutions { get; set; }
 
         /// <summary>
         /// Compiles raw regex strings into regexes.

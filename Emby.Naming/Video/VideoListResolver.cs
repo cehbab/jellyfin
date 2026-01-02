@@ -200,7 +200,7 @@ namespace Emby.Naming.Video
             }
 
             // There are no span overloads for regex unfortunately
-            if (CleanStringParser.TryClean(testFilename.ToString(), namingOptions.CleanStringRegexes, out var cleanName))
+            if (CleanStringParser.TryClean(testFilename.ToString(), namingOptions.CleanStringRegexes, namingOptions.CleanStringSubstitutions, out var cleanName))
             {
                 testFilename = cleanName.AsSpan().Trim();
             }

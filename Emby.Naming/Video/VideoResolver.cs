@@ -143,7 +143,7 @@ namespace Emby.Naming.Video
         /// <returns>True if cleaning of name was successful.</returns>
         public static bool TryCleanString([NotNullWhen(true)] string? name, NamingOptions namingOptions, out string newName)
         {
-            return CleanStringParser.TryClean(name, namingOptions.CleanStringRegexes, out newName);
+            return CleanStringParser.TryClean(name, namingOptions.CleanStringRegexes, namingOptions.CleanStringSubstitutions, out newName);
         }
 
         /// <summary>
